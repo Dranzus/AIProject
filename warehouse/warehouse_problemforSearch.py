@@ -28,5 +28,6 @@ class WarehouseProblemSearch(Problem[WarehouseState]):
 
     def is_goal(self, state: WarehouseState) -> bool:
         # TODO
-        pass
+        return state == self.goal_position
+        # pass
 
