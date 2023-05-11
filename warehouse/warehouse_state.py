@@ -16,41 +16,73 @@ class WarehouseState(State[Action]):
         self.rows = rows
         self.columns = columns
         self.matrix = matrix
+        self.fkLiftPositionLine = None
+        self.fkLiftPositionColumn = None
+        value = constants.FORKLIFT
 
-        #se der erro igualar a -1
+        #Descobrir a posicao do forklift
+        for i in range(self.rows):
+            for j in range(self.columns):
+                if self.matrix[i][j] == value:
+                    self.fkLiftPositionLine = i
+                    self.fkLiftPositionColumn = j
 
+    # se der erro igualar a -1?? aula
 
     def can_move_up(self) -> bool:
         # TODO
-        pass
+        # pode virar se nao for a primeira linha e se nao tiver prateleira ou produto
+        return self.fkLiftPositionLine != 0 and self.matrix[self.fkLiftPositionLine + 1][
+            self.fkLiftPositionColumn] != constants.SHELF and self.matrix[self.fkLiftPositionLine + 1][
+            self.fkLiftPositionColumn] != constants.PRODUCT
 
     def can_move_right(self) -> bool:
         # TODO
-        pass
+        # pode virar se nao for a ultima coluna e se nao tiver prateleira ou produto
+        return self.fkLiftPositionColumn != self.columns - 1 and self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn + 1] != constants.SHELF and self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn + 1] != constants.PRODUCT
+        # pass
 
     def can_move_down(self) -> bool:
         # TODO
+        # pode virar se nao for a ultima linha e se nao tiver prateleira ou produto
+        return self.fkLiftPositionLine != self.rows - 1 and self.matrix[self.fkLiftPositionLine + 1][
+            self.fkLiftPositionColumn] != constants.SHELF and self.matrix[self.fkLiftPositionLine + 1][
+            self.fkLiftPositionColumn] != constants.PRODUCT
         pass
 
     def can_move_left(self) -> bool:
         # TODO
+        # pode virar se nao for a primeira coluna e se nao tiver prateleira ou produto
+        return self.fkLiftPositionColumn != 0 and self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn - 1] != constants.SHELF and self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn - 1] != constants.PRODUCT
         pass
 
     def move_up(self) -> None:
         # TODO
-        pass
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = self.matrix[self.fkLiftPositionLine - 1][self.fkLiftPositionColumn]
+        # self.fkLiftPositionLine += 1
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = constants.FORKLIFT
+        # pass
 
     def move_right(self) -> None:
         # TODO
-        pass
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn + 1]
+        # self.fkLiftPositionLine += 1
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = constants.FORKLIFT
+        # pass
 
     def move_down(self) -> None:
         # TODO
-        pass
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = self.matrix[self.fkLiftPositionLine + 1][self.fkLiftPositionColumn]
+        # self.fkLiftPositionLine += 1
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = constants.FORKLIFT
+        # pass
 
     def move_left(self) -> None:
         # TODO
-        pass
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn - 1]
+        # self.fkLiftPositionLine += 1
+        self.matrix[self.fkLiftPositionLine][self.fkLiftPositionColumn] = constants.FORKLIFT
+        # pass
 
     def get_cell_color(self, row: int, column: int) -> Color:
         if self.matrix[row][column] == constants.EXIT:
