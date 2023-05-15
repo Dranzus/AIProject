@@ -21,6 +21,7 @@ from ga.genetic_algorithm_thread import GeneticAlgorithmThread
 from warehouse.warehouse_agent_search import WarehouseAgentSearch, read_state_from_txt_file
 from warehouse.warehouse_experiments_factory import WarehouseExperimentsFactory
 from warehouse.warehouse_problemforGA import WarehouseProblemGA
+from warehouse.warehouse_problemforSearch import WarehouseProblemSearch
 from warehouse.warehouse_state import WarehouseState
 
 matplotlib.use("TkAgg")
@@ -622,18 +623,20 @@ class SearchSolver(threading.Thread):
 
         p = self.agent.pairs[0]
 
-        cell1 = copy of p.cell1
-        cell2 = copy of p.cell2
+        cell1 = copy.copy(p.cell1)
+        cell2 = copy.copy(p.cell2)
+
         # alterar coordenadas da cell1 se for diferente de um forklift
 
-        state = copy of self.agent.initial_environment
-        state.linha_forklift = cell1.line
-        state.coluna_forklift = cell1.coluna
+        state = copy.copy(self.agent.initial_environment)
+        state.fkLiftPositionLine = cell1.line
+        state.fkLiftPositionColumn = cell1.column
+
         #alterar as coordenadas da cell2 se for diferente da porta
         cell2.column -= 1
-        problem = WarehouseAgentSearch(state,cell2);
+        problem = WarehouseProblemSearch(state,cell2)
 
-        solution = self.agent.solve_problem(problem);
+        solution = self.agent.solve_problem(problem)
 
         p.value = solution.cost
         print(p)

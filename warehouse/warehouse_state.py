@@ -16,24 +16,15 @@ class WarehouseState(State[Action]):
         self.rows = rows
         self.columns = columns
         self.matrix = matrix
-        self.fkLiftPositionLine = None
-        self.fkLiftPositionColumn = None
         value = constants.FORKLIFT
-
-        #Descobrir a posicao do forklift
-        for i in range(self.rows):
-            for j in range(self.columns):
-                if self.matrix[i][j] == value:
-                    self.fkLiftPositionLine = i
-                    self.fkLiftPositionColumn = j
 
     # se der erro igualar a -1?? aula
 
     def can_move_up(self) -> bool:
         # TODO
         # pode virar se nao for a primeira linha e se nao tiver prateleira ou produto
-        return self.fkLiftPositionLine != 0 and self.matrix[self.fkLiftPositionLine + 1][
-            self.fkLiftPositionColumn] != constants.SHELF and self.matrix[self.fkLiftPositionLine + 1][
+        return self.fkLiftPositionLine != 0 and self.matrix[self.fkLiftPositionLine - 1][
+            self.fkLiftPositionColumn] != constants.SHELF and self.matrix[self.fkLiftPositionLine - 1][
             self.fkLiftPositionColumn] != constants.PRODUCT
 
     def can_move_right(self) -> bool:
