@@ -620,7 +620,6 @@ class SearchSolver(threading.Thread):
     def run(self):
         # TODO calculate pairs distances
 
-        """
         p = self.agent.pairs[0]
 
         cell1 = copy of p.cell1
@@ -637,7 +636,7 @@ class SearchSolver(threading.Thread):
         solution = self.agent.solve_problem(problem);
 
         p.value = solution.cost
-        """
+        print(p)
 
         self.gui.text_problem.delete("1.0", "end")
         self.gui.text_problem.insert(tk.END, str(self.agent))

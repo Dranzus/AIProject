@@ -27,7 +27,5 @@ class WarehouseProblemSearch(Problem[WarehouseState]):
         return successor
 
     def is_goal(self, state: WarehouseState) -> bool:
-        # TODO
-        return state == self.goal_position
-        # pass
-
+        return state.fkLiftPositionLine == self.goal_position.line \
+            and state.fkLiftPositionColumn == self.goal_position.column
