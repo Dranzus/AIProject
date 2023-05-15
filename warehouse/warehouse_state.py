@@ -111,7 +111,8 @@ class WarehouseState(State[Action]):
 
     def __eq__(self, other):
         if isinstance(other, WarehouseState):
-            return np.array_equal(self.matrix, other.matrix)
+            return self.fkLiftPositionLine == other.fkLiftPositionLine \
+                and self.fkLiftPositionColumn == other.fkLiftPositionColumn
         return NotImplemented
 
     def __hash__(self):

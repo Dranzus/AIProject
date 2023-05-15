@@ -30,7 +30,6 @@ class WarehouseAgentSearch(Agent):
                 elif environment.matrix[i][j] == constants.PRODUCT:
                     self.products.append(Cell(i, j))
 
-
         for a in self.forklifts:
             for p in self.products:
                 self.pairs.append(Pair(a, p))

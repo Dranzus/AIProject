@@ -620,6 +620,25 @@ class SearchSolver(threading.Thread):
     def run(self):
         # TODO calculate pairs distances
 
+        """
+        p = self.agent.pairs[0]
+
+        cell1 = copy of p.cell1
+        cell2 = copy of p.cell2
+        # alterar coordenadas da cell1 se for diferente de um forklift
+
+        state = copy of self.agent.initial_environment
+        state.linha_forklift = cell1.line
+        state.coluna_forklift = cell1.coluna
+        #alterar as coordenadas da cell2 se for diferente da porta
+        cell2.column -= 1
+        problem = WarehouseAgentSearch(state,cell2);
+
+        solution = self.agent.solve_problem(problem);
+
+        p.value = solution.cost
+        """
+
         self.gui.text_problem.delete("1.0", "end")
         self.gui.text_problem.insert(tk.END, str(self.agent))
         self.agent.search_method.stopped=True
