@@ -621,34 +621,43 @@ class SearchSolver(threading.Thread):
     def run(self):
         # TODO calculate pairs distances
 
+        for x in range(len(self.agent.pairs)):
+            p = self.agent.pairs[x]
 
-        p = self.agent.pairs[0]
+            cell1 = copy.copy(p.cell1)
+            cell2 = copy.copy(p.cell2)
 
-        cell1 = copy.copy(p.cell1)
-        cell2 = copy.copy(p.cell2)
+            # alterar coordenadas da cell1 se for diferente de um forklift
 
-        # alterar coordenadas da cell1 se for diferente de um forklift
+            #while cell1.column != self.agent.initial_environment.fkLiftPositionColumn or cell1.line != self.agent.initial_environment.fkLiftPositionLine:
+            #    cell1.column -= 1
 
-        state = copy.copy(self.agent.initial_environment)
-        state.fkLiftPositionLine = cell1.line
-        state.fkLiftPositionColumn = cell1.column
+            state = copy.copy(self.agent.initial_environment)
+            state.fkLiftPositionLine = cell1.line
+            state.fkLiftPositionColumn = cell1.column
 
-        print(state.matrix[cell1.line][cell1.column])
-        if cell1.column - 1 >= 0:
-            if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
-                cell1.column -= 1
-        elif cell1.column + 1 < state.matrix.columns:
-            if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
-                cell1.column += 1
+            """
+            if cell1.column - 1 >= 0:
+                if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
+                    cell1.column -= 1
+            elif cell1.column + 1 < state.matrix.columns:
+                if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
+                    cell1.column += 1
+            """
 
-        #alterar as coordenadas da cell2 se for diferente da porta
-        cell2.column -= 1
-        problem = WarehouseProblemSearch(state,cell2)
+            #alterar as coordenadas da cell2 se for diferente da porta
 
-        solution = self.agent.solve_problem(problem)
+            if cell2.column - 1 >= 0 and state.matrix[cell2.line][cell2.column - 1] == constants.EMPTY:
+                cell2.column -= 1
+            elif cell2.column + 1 < state.columns and state.matrix[cell2.line][cell2.column + 1] == constants.EMPTY:
+                cell2.column += 1
 
-        p.value = solution.cost
-        print(p)
+            problem = WarehouseProblemSearch(state, cell2)
+
+            solution = self.agent.solve_problem(problem)
+
+            p.value = solution.cost
+            print(p)
 
         self.gui.text_problem.delete("1.0", "end")
         self.gui.text_problem.insert(tk.END, str(self.agent))
