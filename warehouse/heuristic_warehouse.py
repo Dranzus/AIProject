@@ -9,8 +9,8 @@ class HeuristicWarehouse(Heuristic[WarehouseProblemSearch, WarehouseState]):
         super().__init__()
 
     def compute(self, state: WarehouseState) -> float:
-        return 0
+
+        return abs(state.fkLiftPositionLine - self.problem.goal_position.line) + abs(state.fkLiftPositionColumn - self.problem.goal_position.column)
 
     def __str__(self):
-        return "# TODO"
-
+        return "Heuristica"

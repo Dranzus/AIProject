@@ -286,7 +286,7 @@ class Window(tk.Tk):
 
     def runSearch_button_clicked(self):
 
-        self.agent_search.search_method.stopped=False
+        self.agent_search.search_method.stopped = False
 
         self.text_problem.delete("1.0", "end")
 
@@ -370,7 +370,7 @@ class Window(tk.Tk):
             if done:
                 self.queue.queue.clear()
                 self.after_cancel(self.after_id)
-                self.after_id= None
+                self.after_id = None
                 self.solution_runner = None
                 self.manage_buttons(data_set=tk.NORMAL, runSearch=tk.DISABLED, runGA=tk.NORMAL, stop=tk.DISABLED,
                                     open_experiments=tk.NORMAL, run_experiments=tk.DISABLED,
@@ -409,7 +409,6 @@ class Window(tk.Tk):
             self.solver = None
             return
 
-
         if self.solution_runner is not None and self.solution_runner.thread_running:
             self.solution_runner.stop()
             self.queue.queue.clear()
@@ -430,9 +429,6 @@ class Window(tk.Tk):
                                 open_experiments=tk.NORMAL, run_experiments=tk.DISABLED, stop_experiments=tk.DISABLED,
                                 simulation=tk.DISABLED, stop_simulation=tk.DISABLED)
             self.genetic_algorithm = None
-
-
-
 
     def open_experiments_button_clicked(self):
         filename = fd.askopenfilename(initialdir='.')
@@ -627,25 +623,26 @@ class SearchSolver(threading.Thread):
             cell1 = copy.copy(p.cell1)
             cell2 = copy.copy(p.cell2)
 
-            # alterar coordenadas da cell1 se for diferente de um forklift
-
             state = copy.copy(self.agent.initial_environment)
+
             state.fkLiftPositionLine = cell1.line
             state.fkLiftPositionColumn = cell1.column
 
-            if cell1.column - 1 >= 0:
-                if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
-                    cell1.column -= 1
-            elif cell1.column + 1 < state.columns:
-                if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
-                    cell1.column += 1
+            # alterar coordenadas da cell1 se for diferente de um forklift
+            if state.matrix[cell1.line][cell1.column] != constants.FORKLIFT:
+                if cell1.column - 1 >= 0:
+                    if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
+                        cell1.column -= 1
+                elif cell1.column + 1 < state.columns:
+                    if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
+                        cell1.column += 1
 
-            #alterar as coordenadas da cell2 se for diferente da porta
-
-            if cell2.column - 1 >= 0 and state.matrix[cell2.line][cell2.column - 1] == constants.EMPTY:
-                cell2.column -= 1
-            elif cell2.column + 1 < state.columns and state.matrix[cell2.line][cell2.column + 1] == constants.EMPTY:
-                cell2.column += 1
+            # alterar as coordenadas da cell2 se for diferente da porta
+            if state.matrix[cell2.line][cell2.column] != constants.EXIT:
+                if cell2.column + 1 < state.columns and state.matrix[cell2.line][cell2.column + 1] == constants.EMPTY:
+                    cell2.column += 1
+                elif cell2.column - 1 >= 0 and state.matrix[cell2.line][cell2.column - 1] == constants.EMPTY:
+                    cell2.column -= 1
 
             problem = WarehouseProblemSearch(state, cell2)
 
@@ -656,7 +653,7 @@ class SearchSolver(threading.Thread):
 
         self.gui.text_problem.delete("1.0", "end")
         self.gui.text_problem.insert(tk.END, str(self.agent))
-        self.agent.search_method.stopped=True
+        self.agent.search_method.stopped = True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
         self.gui.manage_buttons(data_set=tk.NORMAL, runSearch=tk.DISABLED, runGA=tk.NORMAL, stop=tk.DISABLED,
                                 open_experiments=tk.NORMAL, run_experiments=tk.DISABLED, stop_experiments=tk.DISABLED,
@@ -702,4 +699,3 @@ class SolutionRunner(threading.Thread):
                 # TODO put the catched products in black
             self.gui.queue.put((copy.deepcopy(self.state), step, False))
         self.gui.queue.put((None, steps, True))  # Done
-
