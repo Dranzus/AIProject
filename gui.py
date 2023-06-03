@@ -621,6 +621,7 @@ class SearchSolver(threading.Thread):
     def run(self):
         # TODO calculate pairs distances
 
+
         p = self.agent.pairs[0]
 
         cell1 = copy.copy(p.cell1)
@@ -631,6 +632,14 @@ class SearchSolver(threading.Thread):
         state = copy.copy(self.agent.initial_environment)
         state.fkLiftPositionLine = cell1.line
         state.fkLiftPositionColumn = cell1.column
+
+        print(state.matrix[cell1.line][cell1.column])
+        if cell1.column - 1 >= 0:
+            if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
+                cell1.column -= 1
+        elif cell1.column + 1 < state.matrix.columns:
+            if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
+                cell1.column += 1
 
         #alterar as coordenadas da cell2 se for diferente da porta
         cell2.column -= 1
