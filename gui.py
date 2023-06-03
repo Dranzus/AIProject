@@ -629,21 +629,16 @@ class SearchSolver(threading.Thread):
 
             # alterar coordenadas da cell1 se for diferente de um forklift
 
-            #while cell1.column != self.agent.initial_environment.fkLiftPositionColumn or cell1.line != self.agent.initial_environment.fkLiftPositionLine:
-            #    cell1.column -= 1
-
             state = copy.copy(self.agent.initial_environment)
             state.fkLiftPositionLine = cell1.line
             state.fkLiftPositionColumn = cell1.column
 
-            """
             if cell1.column - 1 >= 0:
                 if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
                     cell1.column -= 1
-            elif cell1.column + 1 < state.matrix.columns:
+            elif cell1.column + 1 < state.columns:
                 if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
                     cell1.column += 1
-            """
 
             #alterar as coordenadas da cell2 se for diferente da porta
 
