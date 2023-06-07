@@ -630,19 +630,17 @@ class SearchSolver(threading.Thread):
 
             # alterar coordenadas da cell1 se for diferente de um forklift
             if state.matrix[cell1.line][cell1.column] != constants.FORKLIFT:
-                if cell1.column - 1 >= 0:
-                    if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
-                        cell1.column -= 1
-                elif cell1.column + 1 < state.columns:
-                    if state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
-                        cell1.column += 1
+                if cell1.column - 1 >= 0 and state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
+                    cell1.column = cell1.column - 1
+                if cell1.column + 1 < state.columns and state.matrix[cell1.line][cell1.column + 1] == constants.EMPTY:
+                    cell1.column = cell1.column + 1
 
             # alterar as coordenadas da cell2 se for diferente da porta
             if state.matrix[cell2.line][cell2.column] != constants.EXIT:
                 if cell2.column + 1 < state.columns and state.matrix[cell2.line][cell2.column + 1] == constants.EMPTY:
-                    cell2.column += 1
-                elif cell2.column - 1 >= 0 and state.matrix[cell2.line][cell2.column - 1] == constants.EMPTY:
-                    cell2.column -= 1
+                    cell2.column = cell2.column + 1
+                if cell2.column - 1 >= 0 and state.matrix[cell2.line][cell2.column - 1] == constants.EMPTY:
+                    cell2.column = cell2.column - 1
 
             problem = WarehouseProblemSearch(state, cell2)
 
